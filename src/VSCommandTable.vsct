@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <Extern href="stdidcmd.h"/>
+  <Extern href="vsshlids.h"/>
+  <Include href="KnownImageIds.vsct"/>
+  <Include href="VSGlobals.vsct"/>
+
+  <Commands package="CloseTabs">
+    <Groups>
+      <Group guid="CloseTabs" id="CloseTabsMenuGroup" priority="0x0100">
+          <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_EZDOCWINTAB"/>
+      </Group>
+    </Groups>
+
+    <Buttons>
+      <Button guid="CloseTabs" id="CloseAllTabsToTheLeft" priority="0x0100" type="Button">
+        <Parent guid="CloseTabs" id="CloseTabsMenuGroup" />
+        <Strings>
+          <ButtonText>Close All to the Left</ButtonText>
+          <LocCanonicalName>.CloseTabs.CloseAllTabsToTheLeft</LocCanonicalName>
+        </Strings>
+      </Button>
+      <Button guid="CloseTabs" id="CloseAllTabsToTheRight" priority="0x0101" type="Button">
+        <Parent guid="CloseTabs" id="CloseTabsMenuGroup" />
+        <Strings>
+          <ButtonText>Close All to the Right</ButtonText>
+          <LocCanonicalName>.CloseTabs.CloseAllTabsToTheRight</LocCanonicalName>
+        </Strings>
+      </Button>
+    </Buttons>
+  </Commands>
+
+  <Symbols>
+    <GuidSymbol name="CloseTabs" value="{7275d502-42d9-4da4-be67-7cb657a9083f}">
+      <IDSymbol name="CloseTabsMenuGroup" value="0x0001" />
+      <IDSymbol name="CloseAllTabsToTheLeft" value="0x0100" />
+      <IDSymbol name="CloseAllTabsToTheRight" value="0x0101" />
+    </GuidSymbol>
+  </Symbols>
+</CommandTable>
