@@ -4,7 +4,7 @@ internal abstract class CloseTabsCommand<TCommand> : BaseCommand<TCommand>
     where TCommand : class, new()
 {
     private IVsWindowFrame[] _framesToClose = Array.Empty<IVsWindowFrame>();
-    private IVsMonitorSelection _monitorSelection;
+    private IVsMonitorSelection? _monitorSelection;
 
     protected override async Task InitializeCompletedAsync()
     {
@@ -22,7 +22,8 @@ internal abstract class CloseTabsCommand<TCommand> : BaseCommand<TCommand>
 
     protected override void BeforeQueryStatus(EventArgs e)
     {
-        IVsWindowFrame selectedFrame = GetSelectedFrame();
+        ThreadHelper.ThrowIfNotOnUIThread();
+        IVsWindowFrame? selectedFrame = GetSelectedFrame();
         if (selectedFrame == null)
         {
             Command.Enabled = false;
@@ -44,7 +45,7 @@ internal abstract class CloseTabsCommand<TCommand> : BaseCommand<TCommand>
 
     private static IEnumerable<IVsWindowFrame> GetOrderedFramesOfActiveWindow()
     {
-        Window activeWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(x => x.IsActive);
+        Window? activeWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(x => x.IsActive);
         if (activeWindow == null)
         {
             return Enumerable.Empty<IVsWindowFrame>();
@@ -65,10 +66,10 @@ internal abstract class CloseTabsCommand<TCommand> : BaseCommand<TCommand>
             : Enumerable.Empty<IVsWindowFrame>();
     }
 
-    private IVsWindowFrame GetSelectedFrame()
+    private IVsWindowFrame? GetSelectedFrame()
     {
         ThreadHelper.ThrowIfNotOnUIThread();
-        _monitorSelection.GetCurrentElementValue((uint)VSConstants.VSSELELEMID.SEID_WindowFrame, out object selection);
+        _monitorSelection!.GetCurrentElementValue((uint)VSConstants.VSSELELEMID.SEID_WindowFrame, out object selection);
         return selection as IVsWindowFrame;
     }
 }

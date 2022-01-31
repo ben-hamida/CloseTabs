@@ -1,18 +1,20 @@
 ﻿namespace CloseTabs;
 
 [Command(PackageIds.CloseAllTabsInProject)]
-internal sealed class ClassAllTabsInProjectCommand : CloseTabsCommand<ClassAllTabsInProjectCommand>
+internal sealed class CloseAllTabsInProjectCommand : CloseTabsCommand<CloseAllTabsInProjectCommand>
 {
     protected override void BeforeQueryStatus(IVsWindowFrame selectedFrame)
     {
-        if (!selectedFrame.TryGetProjectHierarchy(out IVsHierarchy? hierarchy))
+        ThreadHelper.ThrowIfNotOnUIThread();
+        IVsHierarchy? hierarchy = selectedFrame.TryGetProjectHierarchy();
+        if (hierarchy == null)
         {
             Command.Visible = false;
             return;
         }
 
         Command.Visible = true;
-        string projectName = hierarchy!.ToHierarchyItem((uint)VSConstants.VSITEMID.Root).CanonicalName;
+        string projectName = hierarchy.ToHierarchyItem((uint)VSConstants.VSITEMID.Root).CanonicalName;
         Command.Text = $"Close All in Project {projectName}";
     }
 
@@ -20,14 +22,17 @@ internal sealed class ClassAllTabsInProjectCommand : CloseTabsCommand<ClassAllTa
         IEnumerable<IVsWindowFrame> orderedFrames,
         IVsWindowFrame selectedFrame)
     {
-        if (!selectedFrame.TryGetProjectHierarchy(out IVsHierarchy? selectedHierarchy))
+        ThreadHelper.ThrowIfNotOnUIThread();
+        IVsHierarchy? selectedHierarchy = selectedFrame.TryGetProjectHierarchy();
+        if (selectedHierarchy == null)
         {
             yield break;
         }
 
         foreach (IVsWindowFrame frame in orderedFrames)
         {
-            if (frame.TryGetProjectHierarchy(out IVsHierarchy? hierarchy) && hierarchy == selectedHierarchy)
+            IVsHierarchy? hierarchy = frame.TryGetProjectHierarchy();
+            if (hierarchy == selectedHierarchy)
             {
                 yield return frame;
             }

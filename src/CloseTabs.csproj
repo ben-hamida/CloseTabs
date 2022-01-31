@@ -36,7 +36,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -45,10 +44,10 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Commands\ClassAllTabsInProjectCommand.cs" />
+    <Compile Include="Commands\CloseAllTabsExceptInProjectCommand.cs" />
+    <Compile Include="Commands\CloseAllTabsInProjectCommand.cs" />
     <Compile Include="Commands\CloseAllTabsToTheLeftCommand.cs" />
     <Compile Include="Commands\CloseTabsCommand.cs" />
     <Compile Include="GlobalUsings.cs" />
