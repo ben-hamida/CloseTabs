@@ -28,6 +28,15 @@
           <LocCanonicalName>.CloseTabs.CloseAllTabsToTheRight</LocCanonicalName>
         </Strings>
       </Button>
+      <Button guid="CloseTabs" id="CloseAllTabsInProject" priority="0x0102" type="Button">
+        <Parent guid="CloseTabs" id="CloseTabsMenuGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
+        <Strings>
+          <ButtonText>Close All in Project</ButtonText>
+          <LocCanonicalName>.CloseTabs.CloseAllTabsInProject</LocCanonicalName>
+        </Strings>
+      </Button>
     </Buttons>
   </Commands>
 
@@ -36,6 +45,7 @@
       <IDSymbol name="CloseTabsMenuGroup" value="0x0001" />
       <IDSymbol name="CloseAllTabsToTheLeft" value="0x0100" />
       <IDSymbol name="CloseAllTabsToTheRight" value="0x0101" />
+      <IDSymbol name="CloseAllTabsInProject" value="0x0102" />
     </GuidSymbol>
   </Symbols>
 </CommandTable>

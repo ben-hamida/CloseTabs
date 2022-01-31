@@ -5,12 +5,6 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -54,7 +48,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Commands\ClassAllTabsInSameProject.cs" />
+    <Compile Include="Commands\ClassAllTabsInProjectCommand.cs" />
     <Compile Include="Commands\CloseAllTabsToTheLeftCommand.cs" />
     <Compile Include="Commands\CloseTabsCommand.cs" />
     <Compile Include="GlobalUsings.cs" />
@@ -71,6 +65,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>VSCommandTable.vsct</DependentUpon>
     </Compile>
+    <Compile Include="VsWindowFrameExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\LICENSE">
@@ -108,11 +103,4 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

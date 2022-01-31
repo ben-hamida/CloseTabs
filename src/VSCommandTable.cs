@@ -23,5 +23,6 @@ namespace CloseTabs
         public const int CloseTabsMenuGroup = 0x0001;
         public const int CloseAllTabsToTheLeft = 0x0100;
         public const int CloseAllTabsToTheRight = 0x0101;
+        public const int CloseAllTabsInProject = 0x0102;
     }
 }

@@ -3,7 +3,7 @@
 internal abstract class CloseTabsCommand<TCommand> : BaseCommand<TCommand>
     where TCommand : class, new()
 {
-    private IEnumerable<IVsWindowFrame> _framesToClose = Enumerable.Empty<IVsWindowFrame>();
+    private IVsWindowFrame[] _framesToClose = Array.Empty<IVsWindowFrame>();
     private IVsMonitorSelection _monitorSelection;
 
     protected override async Task InitializeCompletedAsync()
@@ -29,8 +29,13 @@ internal abstract class CloseTabsCommand<TCommand> : BaseCommand<TCommand>
             return;
         }
 
-        _framesToClose = GetFramesToClose(GetOrderedFramesOfActiveWindow(), selectedFrame);
+        BeforeQueryStatus(selectedFrame);
+        _framesToClose = GetFramesToClose(GetOrderedFramesOfActiveWindow(), selectedFrame).ToArray();
         Command.Enabled = _framesToClose.Any();
+    }
+
+    protected virtual void BeforeQueryStatus(IVsWindowFrame selectedFrame)
+    {
     }
 
     protected abstract IEnumerable<IVsWindowFrame> GetFramesToClose(
