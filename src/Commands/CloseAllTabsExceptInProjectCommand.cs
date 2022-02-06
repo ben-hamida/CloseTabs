@@ -5,17 +5,9 @@ internal sealed class CloseAllTabsExceptInProjectCommand : CloseTabsCommand<Clos
 {
     protected override void BeforeQueryStatus(IVsWindowFrame selectedFrame)
     {
-        ThreadHelper.ThrowIfNotOnUIThread();
-        IVsHierarchy? hierarchy = selectedFrame.TryGetProjectHierarchy();
-        if (hierarchy == null)
-        {
-            Command.Visible = false;
-            return;
-        }
-
-        Command.Visible = true;
-        string projectName = hierarchy.ToHierarchyItem((uint)VSConstants.VSITEMID.Root).CanonicalName;
-        Command.Text = $"Close All Except in Project {projectName}";
+        Command.SetVisibleIfInProject(
+            selectedFrame,
+            projectName => $"Close All Except in {projectName}");
     }
 
     protected override IEnumerable<IVsWindowFrame> GetFramesToClose(

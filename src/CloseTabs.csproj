@@ -46,6 +46,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CommandExtensions.cs" />
     <Compile Include="Commands\CloseAllTabsExceptInProjectCommand.cs" />
     <Compile Include="Commands\CloseAllTabsInProjectCommand.cs" />
     <Compile Include="Commands\CloseAllTabsToTheLeftCommand.cs" />
