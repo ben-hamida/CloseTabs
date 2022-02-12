@@ -46,6 +46,22 @@
           <LocCanonicalName>.CloseTabs.CloseAllTabsExceptInProject</LocCanonicalName>
         </Strings>
       </Button>
+      <Button guid="CloseTabs" id="CloseAllTabsOfFileType" priority="0x0104" type="Button">
+        <Parent guid="CloseTabs" id="CloseTabsMenuGroup" />
+        <CommandFlag>TextChanges</CommandFlag>
+        <Strings>
+          <ButtonText>Close All of Same File Type</ButtonText>
+          <LocCanonicalName>.CloseTabs.CloseAllTabsOfFileType</LocCanonicalName>
+        </Strings>
+      </Button>
+      <Button guid="CloseTabs" id="CloseAllTabsExceptOfFileType" priority="0x0105" type="Button">
+        <Parent guid="CloseTabs" id="CloseTabsMenuGroup" />
+        <CommandFlag>TextChanges</CommandFlag>
+        <Strings>
+          <ButtonText>Close All Except Same File Type</ButtonText>
+          <LocCanonicalName>.CloseTabs.CloseAllTabsExceptOfFileType</LocCanonicalName>
+        </Strings>
+      </Button>
     </Buttons>
   </Commands>
 
@@ -56,6 +72,8 @@
       <IDSymbol name="CloseAllTabsToTheRight" value="0x0101" />
       <IDSymbol name="CloseAllTabsInProject" value="0x0102" />
       <IDSymbol name="CloseAllTabsExceptInProject" value="0x0103" />
+      <IDSymbol name="CloseAllTabsOfFileType" value="0x0104" />
+      <IDSymbol name="CloseAllTabsExceptOfFileType" value="0x0105" />
     </GuidSymbol>
   </Symbols>
 </CommandTable>
