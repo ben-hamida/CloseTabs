@@ -16,6 +16,8 @@
     <Buttons>
       <Button guid="CloseTabs" id="CloseAllTabsToTheLeft" priority="0x0100" type="Button">
         <Parent guid="CloseTabs" id="CloseTabsMenuGroup" />
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <ButtonText>Close All to the Left</ButtonText>
           <LocCanonicalName>.CloseTabs.CloseAllTabsToTheLeft</LocCanonicalName>
@@ -23,6 +25,8 @@
       </Button>
       <Button guid="CloseTabs" id="CloseAllTabsToTheRight" priority="0x0101" type="Button">
         <Parent guid="CloseTabs" id="CloseTabsMenuGroup" />
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <ButtonText>Close All to the Right</ButtonText>
           <LocCanonicalName>.CloseTabs.CloseAllTabsToTheRight</LocCanonicalName>
@@ -30,6 +34,7 @@
       </Button>
       <Button guid="CloseTabs" id="CloseAllTabsInProject" priority="0x0102" type="Button">
         <Parent guid="CloseTabs" id="CloseTabsMenuGroup" />
+        <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>TextChanges</CommandFlag>
         <Strings>
@@ -37,17 +42,19 @@
           <LocCanonicalName>.CloseTabs.CloseAllTabsInProject</LocCanonicalName>
         </Strings>
       </Button>
-      <Button guid="CloseTabs" id="CloseAllTabsExceptInProject" priority="0x0103" type="Button">
+      <Button guid="CloseTabs" id="CloseAllTabsNotInProject" priority="0x0103" type="Button">
         <Parent guid="CloseTabs" id="CloseTabsMenuGroup" />
+        <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>TextChanges</CommandFlag>
         <Strings>
-          <ButtonText>Close All Except in Project</ButtonText>
-          <LocCanonicalName>.CloseTabs.CloseAllTabsExceptInProject</LocCanonicalName>
+          <ButtonText>Close All not in Project</ButtonText>
+          <LocCanonicalName>.CloseTabs.CloseAllTabsNotInProject</LocCanonicalName>
         </Strings>
       </Button>
       <Button guid="CloseTabs" id="CloseAllTabsOfFileType" priority="0x0104" type="Button">
         <Parent guid="CloseTabs" id="CloseTabsMenuGroup" />
+        <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>TextChanges</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
@@ -55,17 +62,20 @@
           <LocCanonicalName>.CloseTabs.CloseAllTabsOfFileType</LocCanonicalName>
         </Strings>
       </Button>
-      <Button guid="CloseTabs" id="CloseAllTabsExceptOfFileType" priority="0x0105" type="Button">
+      <Button guid="CloseTabs" id="CloseAllTabsNotOfFileType" priority="0x0105" type="Button">
         <Parent guid="CloseTabs" id="CloseTabsMenuGroup" />
+        <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>TextChanges</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
-          <ButtonText>Close All Except Same File Type</ButtonText>
-          <LocCanonicalName>.CloseTabs.CloseAllTabsExceptOfFileType</LocCanonicalName>
+          <ButtonText>Close All not of Same File Type</ButtonText>
+          <LocCanonicalName>.CloseTabs.CloseAllTabsNotOfFileType</LocCanonicalName>
         </Strings>
       </Button>
       <Button guid="CloseTabs" id="CloseAllUnchangedTabs" priority="0x0106" type="Button">
         <Parent guid="CloseTabs" id="CloseTabsMenuGroup" />
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <ButtonText>Close All Unchanged</ButtonText>
           <LocCanonicalName>.CloseTabs.CloseAllUnchangedTabs</LocCanonicalName>
@@ -80,9 +90,9 @@
       <IDSymbol name="CloseAllTabsToTheLeft" value="0x0100" />
       <IDSymbol name="CloseAllTabsToTheRight" value="0x0101" />
       <IDSymbol name="CloseAllTabsInProject" value="0x0102" />
-      <IDSymbol name="CloseAllTabsExceptInProject" value="0x0103" />
+      <IDSymbol name="CloseAllTabsNotInProject" value="0x0103" />
       <IDSymbol name="CloseAllTabsOfFileType" value="0x0104" />
-      <IDSymbol name="CloseAllTabsExceptOfFileType" value="0x0105" />
+      <IDSymbol name="CloseAllTabsNotOfFileType" value="0x0105" />
       <IDSymbol name="CloseAllUnchangedTabs" value="0x0106" />
     </GuidSymbol>
   </Symbols>

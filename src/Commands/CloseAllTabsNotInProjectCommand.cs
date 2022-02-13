@@ -1,7 +1,7 @@
 ﻿namespace CloseTabs;
 
-[Command(PackageIds.CloseAllTabsInProject)]
-internal sealed class CloseAllTabsInProjectCommand : BaseCommand<CloseAllTabsInProjectCommand>
+[Command(PackageIds.CloseAllTabsNotInProject)]
+internal sealed class CloseAllTabsNotInProjectCommand : BaseCommand<CloseAllTabsNotInProjectCommand>
 {
     private IVsWindowFrame[] _framesToClose = Array.Empty<IVsWindowFrame>();
 
@@ -25,9 +25,9 @@ internal sealed class CloseAllTabsInProjectCommand : BaseCommand<CloseAllTabsInP
         }
 
         Command.Visible = true;
-        Command.Text = $"Close All in {selectedProjectHierarchy.GetCanonicalName()}";
+        Command.Text = $"Close All not in {selectedProjectHierarchy.GetCanonicalName()}";
         _framesToClose = (await WindowFrameUtilities.GetAllDocumentsInActiveWindowAsync())
-            .Where(frame => frame.TryGetProjectHierarchy() == selectedProjectHierarchy)
+            .Where(frame => frame.TryGetProjectHierarchy() != selectedProjectHierarchy)
             .ToArray();
         Command.Enabled = _framesToClose.Any();
     }

@@ -39,6 +39,7 @@ internal static class WindowFrameUtilities
 
     public static async Task<string?> GetSelectedFileExtensionAsync()
     {
+        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
         IVsWindowFrame? selectedFrame = await GetSelectedFrameAsync();
         return selectedFrame?.GetFileExtension();
     }
@@ -46,6 +47,29 @@ internal static class WindowFrameUtilities
     public static async Task CloseAllWindowFramesAsync(Func<IVsWindowFrame, bool> selector)
     {
         IReadOnlyList<IVsWindowFrame> documents = await GetAllDocumentsInActiveWindowAsync();
-        documents.Where(selector).CloseAll();
+        await documents.Where(selector).CloseAllAsync();
+    }
+
+    public static IEnumerable<IVsWindowFrame> GetOrderedFramesOfActiveWindow()
+    {
+        Window? activeWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(x => x.IsActive);
+        if (activeWindow == null)
+        {
+            return Enumerable.Empty<IVsWindowFrame>();
+        }
+
+        IInputElement focusedElement = FocusManager.GetFocusedElement(activeWindow);
+        if (focusedElement == null)
+        {
+            return Enumerable.Empty<IVsWindowFrame>();
+        }
+
+        object control = ((DependencyObject)focusedElement).FindAncestor(
+            visual => visual.GetVisualOrLogicalParent(),
+            x => x.GetType().Name.Contains("DocumentGroupControl"));
+
+        return control is ItemsControl itemControl
+            ? itemControl.Items.Cast<dynamic>().Select(d => d.WindowFrame).Cast<IVsWindowFrame>()
+            : Enumerable.Empty<IVsWindowFrame>();
     }
 }

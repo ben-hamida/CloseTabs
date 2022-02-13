@@ -13,5 +13,4 @@ global using Microsoft.VisualStudio;
 global using Microsoft.VisualStudio.PlatformUI;
 global using Microsoft.VisualStudio.Shell;
 global using Microsoft.VisualStudio.Shell.Interop;
-global using Microsoft.VisualStudio.Text;
 global using Microsoft.VisualStudio.TextManager.Interop;

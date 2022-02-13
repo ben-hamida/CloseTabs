@@ -4,8 +4,7 @@
 [InstalledProductRegistration(Vsix.Name, Vsix.Description, Vsix.Version)]
 [ProvideMenuResource("Menus.ctmenu", 1)]
 [Guid(PackageGuids.CloseTabsString)]
-[ProvideAutoLoad(UIContextGuids.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
-[ProvideAutoLoad(UIContextGuids.NoSolution, PackageAutoLoadFlags.BackgroundLoad)]
+[ProvideAutoLoad(VSConstants.UICONTEXT.DocumentWindowActive_string, PackageAutoLoadFlags.BackgroundLoad)]
 public sealed class CloseTabsPackage : ToolkitPackage
 {
     protected override async Task InitializeAsync(
