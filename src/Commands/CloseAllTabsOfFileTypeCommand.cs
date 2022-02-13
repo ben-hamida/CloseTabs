@@ -14,7 +14,7 @@ internal sealed class CloseAllTabsOfFileTypeCommand : BaseCommand<CloseAllTabsOf
     {
         if (_fileExtension is not null)
         {
-            await WindowFrameUtilities.CloseALlTabsAsync(frame => frame.GetFileExtension() == _fileExtension);
+            await WindowFrameUtilities.CloseAllWindowFramesAsync(frame => frame.GetFileExtension() == _fileExtension);
         }
     }
 

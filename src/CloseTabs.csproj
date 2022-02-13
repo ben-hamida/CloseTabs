@@ -52,6 +52,7 @@
     <Compile Include="Commands\CloseAllTabsInProjectCommand.cs" />
     <Compile Include="Commands\CloseAllTabsToTheLeftCommand.cs" />
     <Compile Include="Commands\CloseAllTabsOfFileTypeCommand.cs" />
+    <Compile Include="Commands\CloseAllUnchangedTabsCommand.cs" />
     <Compile Include="Commands\CloseTabsCommand.cs" />
     <Compile Include="GlobalUsings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

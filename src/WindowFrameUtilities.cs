@@ -43,7 +43,7 @@ internal static class WindowFrameUtilities
         return selectedFrame?.GetFileExtension();
     }
 
-    public static async Task CloseALlTabsAsync(Func<IVsWindowFrame, bool> selector)
+    public static async Task CloseAllWindowFramesAsync(Func<IVsWindowFrame, bool> selector)
     {
         IReadOnlyList<IVsWindowFrame> documents = await GetAllDocumentsInActiveWindowAsync();
         documents.Where(selector).CloseAll();

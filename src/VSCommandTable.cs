@@ -27,5 +27,6 @@ namespace CloseTabs
         public const int CloseAllTabsExceptInProject = 0x0103;
         public const int CloseAllTabsOfFileType = 0x0104;
         public const int CloseAllTabsExceptOfFileType = 0x0105;
+        public const int CloseAllUnchangedTabs = 0x0106;
     }
 }
