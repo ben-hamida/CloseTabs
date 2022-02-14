@@ -11,6 +11,7 @@ public sealed class CloseTabsPackage : ToolkitPackage
         CancellationToken cancellationToken,
         IProgress<ServiceProgressData> progress)
     {
+        await Services.InitializeAsync();
         await this.RegisterCommandsAsync();
     }
 }

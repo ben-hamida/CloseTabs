@@ -2,23 +2,18 @@
 
 internal static class WindowFrameUtilities
 {
-    public static async Task<IEnumerable<IVsWindowFrame>> GetAllDocumentsInActiveWindowAsync()
+    public static IEnumerable<IVsWindowFrame> GetAllDocumentsInActiveWindow()
     {
-        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-        IVsWindowFrame? selection = await GetSelectedFrameAsync();
+        ThreadHelper.ThrowIfNotOnUIThread();
+        IVsWindowFrame? selection = Services.VsMonitorSelection.GetSelectedFrame();
         // ReSharper disable once SuspiciousTypeConversion.Global
-        if (selection is not IVsWindowFrame6 selectedFrame)
-        {
-            return new List<IVsWindowFrame>();
-        }
-
-        IVsUIShell uiShell = await VS.Services.GetUIShellAsync();
-        return AllDocumentsInActiveWindow();
+        return selection is IVsWindowFrame6 selectedFrame
+            ? AllDocumentsInActiveWindow()
+            : new List<IVsWindowFrame>();
 
         IEnumerable<IVsWindowFrame> AllDocumentsInActiveWindow()
         {
-            ErrorHandler.ThrowOnFailure(uiShell.GetDocumentWindowEnum(out IEnumWindowFrames docEnum));
+            ErrorHandler.ThrowOnFailure(Services.VsUIShell.GetDocumentWindowEnum(out IEnumWindowFrames docEnum));
             var temp = new IVsWindowFrame[1];
             while (docEnum.Next(1, temp, out uint fetched) == VSConstants.S_OK && fetched == 1)
             {
@@ -36,19 +31,11 @@ internal static class WindowFrameUtilities
         }
     }
 
-    public static async Task<IVsWindowFrame?> GetSelectedFrameAsync()
+    public static IVsWindowFrame? GetSelectedFrame(this IVsMonitorSelection monitorSelection)
     {
-        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-        IVsMonitorSelection monitorSelection = await VS.Services.GetMonitorSelectionAsync();
+        ThreadHelper.ThrowIfNotOnUIThread();
         monitorSelection.GetCurrentElementValue((uint)VSConstants.VSSELELEMID.SEID_WindowFrame, out object selection);
         return selection as IVsWindowFrame;
-    }
-
-    public static async Task<string?> GetSelectedFileExtensionAsync()
-    {
-        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-        IVsWindowFrame? selectedFrame = await GetSelectedFrameAsync();
-        return selectedFrame?.GetFileExtension();
     }
 
     public static IEnumerable<IVsWindowFrame> GetOrderedFramesOfActiveWindow()

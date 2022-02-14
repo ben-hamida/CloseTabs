@@ -53,6 +53,7 @@
     <Compile Include="Commands\CloseAllTabsOfFileTypeCommand.cs" />
     <Compile Include="Commands\CloseAllUnchangedTabsCommand.cs" />
     <Compile Include="GlobalUsings.cs" />
+    <Compile Include="Services.cs" />
     <Compile Include="Utilities\HierarchyExtensions.cs" />
     <Compile Include="Utilities\HierarchyUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -8,21 +8,18 @@ internal sealed class CloseAllTabsInProjectCommand : BaseCommand<CloseAllTabsInP
     protected override async Task ExecuteAsync(OleMenuCmdEventArgs e)
     {
         await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-        IEnumerable<IVsWindowFrame> documents = await WindowFrameUtilities.GetAllDocumentsInActiveWindowAsync();
-        await documents
+        IEnumerable<IVsWindowFrame> documents = WindowFrameUtilities.GetAllDocumentsInActiveWindow();
+        documents
             .Where(frame => frame.TryGetProjectHierarchy() == _selectedProjectHierarchy)
             .ToList()
-            .CloseAllAsync();
+            .CloseAll();
     }
 
-    protected override void BeforeQueryStatus(EventArgs e) => BeforeQueryStatusAsync().FireAndForget();
-
-    private async Task BeforeQueryStatusAsync()
+    protected override void BeforeQueryStatus(EventArgs e)
     {
-        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
+        ThreadHelper.ThrowIfNotOnUIThread();
         Command.Visible = false;
-        _selectedProjectHierarchy = await HierarchyUtilities.GetProjectHierarchyOfCurrentWindowFrameAsync();
+        _selectedProjectHierarchy = HierarchyUtilities.GetProjectHierarchyOfCurrentWindowFrame();
         if (_selectedProjectHierarchy == null)
         {
             return;

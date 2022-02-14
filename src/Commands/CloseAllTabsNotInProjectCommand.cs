@@ -5,20 +5,18 @@ internal sealed class CloseAllTabsNotInProjectCommand : BaseCommand<CloseAllTabs
 {
     private IEnumerable<IVsWindowFrame> _framesToClose = Enumerable.Empty<IVsWindowFrame>();
 
-    protected override async Task ExecuteAsync(OleMenuCmdEventArgs e)
+    protected override Task ExecuteAsync(OleMenuCmdEventArgs e)
     {
-        await _framesToClose.ToList().CloseAllAsync();
+        _framesToClose.ToList().CloseAll();
+        return Task.CompletedTask;
     }
 
-    protected override void BeforeQueryStatus(EventArgs e) => BeforeQueryStatusAsync().FireAndForget();
-
-    private async Task BeforeQueryStatusAsync()
+    protected override void BeforeQueryStatus(EventArgs e)
     {
-        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
+        ThreadHelper.ThrowIfNotOnUIThread();
         Command.Visible = false;
         _framesToClose = Enumerable.Empty<IVsWindowFrame>();
-        IVsHierarchy? selectedProjectHierarchy = await HierarchyUtilities.GetProjectHierarchyOfCurrentWindowFrameAsync();
+        IVsHierarchy? selectedProjectHierarchy = HierarchyUtilities.GetProjectHierarchyOfCurrentWindowFrame();
         if (selectedProjectHierarchy == null)
         {
             return;
@@ -26,7 +24,7 @@ internal sealed class CloseAllTabsNotInProjectCommand : BaseCommand<CloseAllTabs
 
         Command.Visible = true;
         Command.Text = $"Close All not in {selectedProjectHierarchy.GetCanonicalName()}";
-        _framesToClose = (await WindowFrameUtilities.GetAllDocumentsInActiveWindowAsync())
+        _framesToClose = WindowFrameUtilities.GetAllDocumentsInActiveWindow()
             .Where(frame => frame.TryGetProjectHierarchy() != selectedProjectHierarchy);
         Command.Enabled = _framesToClose.Any();
     }

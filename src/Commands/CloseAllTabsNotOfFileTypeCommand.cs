@@ -5,25 +5,24 @@ internal sealed class CloseAllTabsNotOfFileTypeCommand : BaseCommand<CloseAllTab
 {
     private IEnumerable<IVsWindowFrame> _framesToClose = Enumerable.Empty<IVsWindowFrame>();
 
-    protected override async Task ExecuteAsync(OleMenuCmdEventArgs e)
+    protected override Task ExecuteAsync(OleMenuCmdEventArgs e)
     {
-        await _framesToClose.ToList().CloseAllAsync();
+        _framesToClose.ToList().CloseAll();
+        return Task.CompletedTask;
     }
 
-    protected override void BeforeQueryStatus(EventArgs e) => BeforeQueryStatusAsync().FireAndForget();
-
-    private async Task BeforeQueryStatusAsync()
+    protected override void BeforeQueryStatus(EventArgs e)
     {
+        ThreadHelper.ThrowIfNotOnUIThread();
         _framesToClose = Enumerable.Empty<IVsWindowFrame>();
-        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-        string? fileExtension = await WindowFrameUtilities.GetSelectedFileExtensionAsync();
+        string? fileExtension = Services.VsMonitorSelection.GetSelectedFrame()?.GetFileExtension();
         if (fileExtension is null)
         {
             Command.Visible = false;
             return;
         }
 
-        IEnumerable<IVsWindowFrame> documents = await WindowFrameUtilities.GetAllDocumentsInActiveWindowAsync();
+        IEnumerable<IVsWindowFrame> documents = WindowFrameUtilities.GetAllDocumentsInActiveWindow();
         _framesToClose = documents.Where(frame => frame.GetFileExtension() != fileExtension);
         Command.Visible = true;
         Command.Enabled = _framesToClose.Any();

@@ -2,10 +2,8 @@
 
 internal static class HierarchyUtilities
 {
-    public static async Task<IVsHierarchy?> GetProjectHierarchyOfCurrentWindowFrameAsync()
+    public static IVsHierarchy? GetProjectHierarchyOfCurrentWindowFrame()
     {
-        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-        IVsWindowFrame? selectedFrame = await WindowFrameUtilities.GetSelectedFrameAsync();
-        return selectedFrame?.TryGetProjectHierarchy();
+        return Services.VsMonitorSelection.GetSelectedFrame()?.TryGetProjectHierarchy();
     }
 }

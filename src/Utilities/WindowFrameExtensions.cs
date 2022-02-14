@@ -2,10 +2,9 @@
 
 internal static class WindowFrameExtensions
 {
-    public static async Task CloseAllAsync(this IEnumerable<IVsWindowFrame> frames)
+    public static void CloseAll(this IEnumerable<IVsWindowFrame> frames)
     {
-        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
+        ThreadHelper.ThrowIfNotOnUIThread();
         foreach (IVsWindowFrame frame in frames)
         {
             frame.CloseFrame((uint)__FRAMECLOSE.FRAMECLOSE_PromptSave);

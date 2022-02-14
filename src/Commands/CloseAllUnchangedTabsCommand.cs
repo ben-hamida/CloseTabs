@@ -5,17 +5,17 @@ internal sealed class CloseAllUnchangedTabsCommand : BaseCommand<CloseAllUnchang
 {
     private IEnumerable<IVsWindowFrame> _unchangedDocuments = Enumerable.Empty<IVsWindowFrame>();
 
-    protected override async Task ExecuteAsync(OleMenuCmdEventArgs e)
+    protected override Task ExecuteAsync(OleMenuCmdEventArgs e)
     {
-        await _unchangedDocuments.ToList().CloseAllAsync();
+        _unchangedDocuments.ToList().CloseAll();
+        return Task.CompletedTask;
     }
 
-    protected override void BeforeQueryStatus(EventArgs e) => BeforeQueryStatusAsync().FireAndForget();
-
-    private async Task BeforeQueryStatusAsync()
+    protected override void BeforeQueryStatus(EventArgs e)
     {
+        ThreadHelper.ThrowIfNotOnUIThread();
         _unchangedDocuments = Enumerable.Empty<IVsWindowFrame>();
-        IEnumerable<IVsWindowFrame> frames = await WindowFrameUtilities.GetAllDocumentsInActiveWindowAsync();
+        IEnumerable<IVsWindowFrame> frames = WindowFrameUtilities.GetAllDocumentsInActiveWindow();
         _unchangedDocuments = frames.Where(IsUnchanged);
         Command.Enabled = _unchangedDocuments.Any();
     }

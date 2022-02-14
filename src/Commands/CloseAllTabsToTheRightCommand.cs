@@ -5,17 +5,17 @@ internal sealed class CloseAllTabsToTheRightCommand : BaseCommand<CloseAllTabsTo
 {
     private IEnumerable<IVsWindowFrame> _framesToClose = Enumerable.Empty<IVsWindowFrame>();
 
-    protected override async Task ExecuteAsync(OleMenuCmdEventArgs e)
+    protected override Task ExecuteAsync(OleMenuCmdEventArgs e)
     {
-        await _framesToClose.ToList().CloseAllAsync();
+        _framesToClose.ToList().CloseAll();
+        return Task.CompletedTask;
     }
 
-    protected override void BeforeQueryStatus(EventArgs e) => BeforeQueryStatusAsync().FireAndForget();
-
-    private async Task BeforeQueryStatusAsync()
+    protected override void BeforeQueryStatus(EventArgs e)
     {
+        ThreadHelper.ThrowIfNotOnUIThread();
         _framesToClose = Enumerable.Empty<IVsWindowFrame>();
-        IVsWindowFrame? selectedFrame = await WindowFrameUtilities.GetSelectedFrameAsync();
+        IVsWindowFrame? selectedFrame = Services.VsMonitorSelection.GetSelectedFrame();
         if (selectedFrame == null)
         {
             return;
