@@ -2,7 +2,7 @@
 
 internal static class WindowFrameUtilities
 {
-    public static async Task<IReadOnlyList<IVsWindowFrame>> GetAllDocumentsInActiveWindowAsync()
+    public static async Task<IEnumerable<IVsWindowFrame>> GetAllDocumentsInActiveWindowAsync()
     {
         await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -14,19 +14,26 @@ internal static class WindowFrameUtilities
         }
 
         IVsUIShell uiShell = await VS.Services.GetUIShellAsync();
-        ErrorHandler.ThrowOnFailure(uiShell.GetDocumentWindowEnum(out IEnumWindowFrames docEnum));
-        var temp = new IVsWindowFrame[1];
-        var frames = new List<IVsWindowFrame>();
-        while (docEnum.Next(1, temp, out uint fetched) == VSConstants.S_OK && fetched == 1)
-        {
-            IVsWindowFrame frame = temp[0];
-            if (selectedFrame.IsInSameTabGroup(frame))
-            {
-                frames.Add(frame);
-            }
-        }
+        return AllDocumentsInActiveWindow();
 
-        return frames;
+        IEnumerable<IVsWindowFrame> AllDocumentsInActiveWindow()
+        {
+            ErrorHandler.ThrowOnFailure(uiShell.GetDocumentWindowEnum(out IEnumWindowFrames docEnum));
+            var temp = new IVsWindowFrame[1];
+            while (docEnum.Next(1, temp, out uint fetched) == VSConstants.S_OK && fetched == 1)
+            {
+                IVsWindowFrame frame = temp[0];
+                if (frame != selection && selectedFrame.IsInSameTabGroup(frame))
+                {
+                    yield return frame;
+                }
+            }
+
+            // Always return the selected frame last. When closing the window frames it is very costly for performance
+            // to have to switch selection on a close. Therefor close all non-selected frames first.
+            // ReSharper disable once SuspiciousTypeConversion.Global
+            yield return (IVsWindowFrame)selectedFrame;
+        }
     }
 
     public static async Task<IVsWindowFrame?> GetSelectedFrameAsync()
@@ -42,12 +49,6 @@ internal static class WindowFrameUtilities
         await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
         IVsWindowFrame? selectedFrame = await GetSelectedFrameAsync();
         return selectedFrame?.GetFileExtension();
-    }
-
-    public static async Task CloseAllWindowFramesAsync(Func<IVsWindowFrame, bool> selector)
-    {
-        IReadOnlyList<IVsWindowFrame> documents = await GetAllDocumentsInActiveWindowAsync();
-        await documents.Where(selector).CloseAllAsync();
     }
 
     public static IEnumerable<IVsWindowFrame> GetOrderedFramesOfActiveWindow()

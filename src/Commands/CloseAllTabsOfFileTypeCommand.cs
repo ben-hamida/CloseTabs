@@ -5,19 +5,17 @@ internal sealed class CloseAllTabsOfFileTypeCommand : BaseCommand<CloseAllTabsOf
 {
     private string? _fileExtension;
 
-    protected override void BeforeQueryStatus(EventArgs e)
-    {
-        BeforeQueryStatusAsync().FireAndForget();
-    }
-
     protected override async Task ExecuteAsync(OleMenuCmdEventArgs e)
     {
         if (_fileExtension is not null)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-            await WindowFrameUtilities.CloseAllWindowFramesAsync(frame => frame.GetFileExtension() == _fileExtension);
+            IEnumerable<IVsWindowFrame> documents = await WindowFrameUtilities.GetAllDocumentsInActiveWindowAsync();
+            await documents.Where(frame => frame.GetFileExtension() == _fileExtension).CloseAllAsync();
         }
     }
+
+    protected override void BeforeQueryStatus(EventArgs e) => BeforeQueryStatusAsync().FireAndForget();
 
     private async Task BeforeQueryStatusAsync()
     {
