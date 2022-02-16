@@ -19,12 +19,14 @@ internal sealed class CloseAllTabsInProjectCommand : BaseCommand<CloseAllTabsInP
     {
         ThreadHelper.ThrowIfNotOnUIThread();
         Command.Visible = false;
+        Command.Enabled = false;
         _selectedProjectHierarchy = HierarchyUtilities.GetProjectHierarchyOfCurrentWindowFrame();
         if (_selectedProjectHierarchy == null)
         {
             return;
         }
 
+        Command.Enabled = true;
         Command.Visible = true;
         Command.Text = $"Close All in {_selectedProjectHierarchy.GetCanonicalName()}";
     }

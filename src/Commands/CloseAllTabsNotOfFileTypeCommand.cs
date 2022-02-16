@@ -14,11 +14,12 @@ internal sealed class CloseAllTabsNotOfFileTypeCommand : BaseCommand<CloseAllTab
     protected override void BeforeQueryStatus(EventArgs e)
     {
         ThreadHelper.ThrowIfNotOnUIThread();
+        Command.Visible = false;
+        Command.Enabled = false;
         _framesToClose = Enumerable.Empty<IVsWindowFrame>();
         string? fileExtension = Services.VsMonitorSelection.GetSelectedFrame()?.GetFileExtension();
         if (fileExtension is null)
         {
-            Command.Visible = false;
             return;
         }
 

@@ -19,6 +19,7 @@ internal sealed class CloseAllTabsOfFileTypeCommand : BaseCommand<CloseAllTabsOf
     protected override void BeforeQueryStatus(EventArgs e)
     {
         _fileExtension = Services.VsMonitorSelection.GetSelectedFrame()?.GetFileExtension();
+        Command.Enabled = _fileExtension != null;
         Command.Visible = _fileExtension != null;
         Command.Text = $"Close all {_fileExtension} Files";
     }

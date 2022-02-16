@@ -14,9 +14,10 @@ internal sealed class CloseAllTabsToTheRightCommand : BaseCommand<CloseAllTabsTo
     protected override void BeforeQueryStatus(EventArgs e)
     {
         ThreadHelper.ThrowIfNotOnUIThread();
+        Command.Enabled = false;
         _framesToClose = Enumerable.Empty<IVsWindowFrame>();
         IVsWindowFrame? selectedFrame = Services.VsMonitorSelection.GetSelectedFrame();
-        if (selectedFrame == null)
+        if (selectedFrame == null || !selectedFrame.IsDocument())
         {
             return;
         }

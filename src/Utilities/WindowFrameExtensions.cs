@@ -18,6 +18,14 @@ internal static class WindowFrameExtensions
         return Path.GetExtension(value as string);
     }
 
+    public static bool IsDocument(this IVsWindowFrame frame)
+    {
+        ThreadHelper.ThrowIfNotOnUIThread();
+        frame.GetProperty((int)__VSFPROPID.VSFPROPID_Type, out object value);
+        int? frameType = value as int?;
+        return frameType ==  1;
+    }
+
     /// <summary>
     /// Gets the IVsHierarchy that represents the project for the specified IVsWindowFrame.
     /// </summary>

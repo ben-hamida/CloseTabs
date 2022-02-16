@@ -46,13 +46,14 @@ internal static class WindowFrameUtilities
             return Enumerable.Empty<IVsWindowFrame>();
         }
 
-        IInputElement focusedElement = FocusManager.GetFocusedElement(activeWindow);
-        if (focusedElement == null)
+        Services.VsTextManager.GetActiveView(1, null, out IVsTextView activeView);
+        var wpfTextView = activeView.ToIWpfTextView();
+        if (wpfTextView is null)
         {
             return Enumerable.Empty<IVsWindowFrame>();
         }
 
-        object control = ((DependencyObject)focusedElement).FindAncestor(
+        object control = ((DependencyObject)wpfTextView.VisualElement).FindAncestor(
             visual => visual.GetVisualOrLogicalParent(),
             x => x.GetType().Name.Contains("DocumentGroupControl"));
 

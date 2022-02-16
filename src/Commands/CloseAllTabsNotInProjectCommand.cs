@@ -15,6 +15,7 @@ internal sealed class CloseAllTabsNotInProjectCommand : BaseCommand<CloseAllTabs
     {
         ThreadHelper.ThrowIfNotOnUIThread();
         Command.Visible = false;
+        Command.Enabled = false;
         _framesToClose = Enumerable.Empty<IVsWindowFrame>();
         IVsHierarchy? selectedProjectHierarchy = HierarchyUtilities.GetProjectHierarchyOfCurrentWindowFrame();
         if (selectedProjectHierarchy == null)
