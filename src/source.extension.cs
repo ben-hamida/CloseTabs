@@ -8,11 +8,11 @@ namespace CloseTabs
     internal sealed partial class Vsix
     {
         public const string Id = "CloseTabs.e5b9a3c3-a11e-428f-9e4b-414a1fb45c16";
-        public const string Name = "CloseTabs";
+        public const string Name = "Close Tabs";
         public const string Description = @"Provides additional options to close tabs in the tab context menu, for instance to close all tabs to the right or left.";
         public const string Language = "en-US";
         public const string Version = "1.0";
         public const string Author = "Änis Ben Hamida";
-        public const string Tags = "close, tab, tabs, close all";
+        public const string Tags = "close, tab, tabs, close all, left, right, unchanged, window, open source";
     }
 }
