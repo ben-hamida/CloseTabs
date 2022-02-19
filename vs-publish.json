@@ -1,6 +1,6 @@
 {
   "$schema": "http://json.schemastore.org/vsix-publish",
-  "categories": [ "workflow", "coding", "other" ],
+  "categories": [ "coding" ],
   "identity": {
     "internalName": "CloseTabs"
   },
