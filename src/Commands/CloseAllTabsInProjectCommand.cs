@@ -5,9 +5,9 @@ internal sealed class CloseAllTabsInProjectCommand : BaseCommand<CloseAllTabsInP
 {
     private IVsHierarchy? _selectedProjectHierarchy;
 
-    protected override async Task ExecuteAsync(OleMenuCmdEventArgs e)
+    protected override void Execute(object sender, EventArgs e)
     {
-        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+        ThreadHelper.ThrowIfNotOnUIThread();
         IEnumerable<IVsWindowFrame> documents = WindowFrameUtilities.GetAllDocumentsInActiveWindow();
         documents
             .Where(frame => frame.TryGetProjectHierarchy() == _selectedProjectHierarchy)

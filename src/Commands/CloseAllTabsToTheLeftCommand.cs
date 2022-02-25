@@ -4,11 +4,11 @@
 internal sealed class CloseAllTabsToTheLeftCommand : BaseCommand<CloseAllTabsToTheLeftCommand>
 {
     private IEnumerable<IVsWindowFrame> _framesToClose = Enumerable.Empty<IVsWindowFrame>();
-
-    protected override Task ExecuteAsync(OleMenuCmdEventArgs e)
+    
+    protected override void Execute(object sender, EventArgs e)
     {
+        ThreadHelper.ThrowIfNotOnUIThread();
         _framesToClose.ToList().CloseAll();
-        return Task.CompletedTask;
     }
 
     protected override void BeforeQueryStatus(EventArgs e)

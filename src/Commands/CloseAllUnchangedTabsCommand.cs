@@ -5,10 +5,10 @@ internal sealed class CloseAllUnchangedTabsCommand : BaseCommand<CloseAllUnchang
 {
     private IEnumerable<IVsWindowFrame> _unchangedDocuments = Enumerable.Empty<IVsWindowFrame>();
 
-    protected override Task ExecuteAsync(OleMenuCmdEventArgs e)
+    protected override void Execute(object sender, EventArgs e)
     {
+        ThreadHelper.ThrowIfNotOnUIThread();
         _unchangedDocuments.ToList().CloseAll();
-        return Task.CompletedTask;
     }
 
     protected override void BeforeQueryStatus(EventArgs e)
