@@ -1,4 +1,7 @@
-﻿namespace CloseTabs;
+﻿using EnvDTE;
+using EnvDTE80;
+
+namespace CloseTabs;
 
 [Command(PackageIds.CloseAllTabsInProject)]
 internal sealed class CloseAllTabsInProjectCommand : BaseCommand<CloseAllTabsInProjectCommand>
@@ -18,6 +21,14 @@ internal sealed class CloseAllTabsInProjectCommand : BaseCommand<CloseAllTabsInP
     protected override void BeforeQueryStatus(EventArgs e)
     {
         ThreadHelper.ThrowIfNotOnUIThread();
+
+        var dte = VS.GetRequiredService<DTE, DTE2>();
+        var windowConfiguration = dte.WindowConfigurations;
+        foreach (object configuration in windowConfiguration)
+        {
+            
+        }
+
         Command.Visible = false;
         Command.Enabled = false;
         _selectedProjectHierarchy = HierarchyUtilities.GetProjectHierarchyOfCurrentWindowFrame();

@@ -37,4 +37,19 @@ internal static class WindowFrameExtensions
         frame.GetProperty((int)__VSFPROPID.VSFPROPID_Hierarchy, out object obj);
         return obj as IVsHierarchy;
     }
+
+    public static DTEWindow? GetParentWindow(this IVsWindowFrame vsWindowFrame)
+    {
+        ThreadHelper.ThrowIfNotOnUIThread();
+
+        try
+        {
+            int result = vsWindowFrame.GetProperty((int)__VSFPROPID.VSFPROPID_ExtWindowObject, out object windowObj);
+            return !ErrorHandler.Succeeded(result) ? null : (windowObj as DTEWindow)?.LinkedWindowFrame;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
 }
